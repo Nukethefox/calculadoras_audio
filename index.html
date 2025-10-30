@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Unidades de sonido</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page">
+
+    <!-- NAVBAR -->
+    <div class="navbar">
+      <ul style="display: flex; list-style: none;">
+        <li><button class="navbutton selected" onclick="location.href='index.html'">Unidades de sonido</button></li>
+        <li><button class="navbutton" onclick="location.href='electricity_units.html'">Unidades electricidad</button></li>
+        <li><button class="navbutton" onclick="location.href='qnh.html'">Impedancias y etapas</button></li>
+        <li><button class="navbutton" onclick="location.href='taxi_calc.html'">Ajustes de subgraves</button></li>
+        <li><button class="navbutton" onclick="location.href='speed_calc.html'">TRAFFIC SPEEDS & CONFLICTS</button></li>
+        <li><button class="navbutton" onclick="location.href='traffic_sep.html'">WAKE TURBULENCE SEPARATION</button></li>
+      </ul>
+    </div>
+
+    <h1>Calculadoras de sonido</h1>
+
+    <!-- Temperatura → Velocidad -->
+    <form class="card" onsubmit="return false;">
+      <div class="row">
+        <div>
+          <div class="calc-title">Velocidad de propagación del sonido en el aire</div>
+          <div class="fieldline">
+            <div class="unit-left">Temp. actual (°C)</div>
+            <div class="input-wrap">
+              <input id="temp" type="number" step="0.1" value="15" />
+            </div>
+          </div>
+          <div class="small">Este calculo afecta a las demás calculadoras</div>
+        </div>
+        <div class="outbox" aria-live="polite">
+          <div class="value-inline" id="cVal">343,4<span class="u">m/s</span></div>
+        </div>
+      </div>
+    </form>
+
+    <!-- Longitud de onda según frecuencia -->
+    <form class="card" onsubmit="return false;">
+      <div class="row">
+        <div>
+          <div class="calc-title">Longitud de onda según la frecuencia</div>
+          <div class="fieldline">
+            <div class="unit-left">F (Hz)</div>
+            <div class="input-wrap">
+              <input id="freq" type="number" min="0" step="0.01" />
+            </div>
+          </div>
+        </div>
+        <div class="outbox" aria-live="polite">
+          <div class="value-inline" id="lambdaFromF">—<span class="u"></span></div>
+        </div>
+      </div>
+    </form>
+
+    <!-- Frecuencia según longitud de onda -->
+    <form class="card" onsubmit="return false;">
+      <div class="row">
+        <div>
+          <div class="calc-title">Frecuencia según la longitud de onda</div>
+          <div class="fieldline">
+            <div class="unit-left">λ (m)</div>
+            <div class="input-wrap">
+              <input id="lambda" type="number" min="0" step="0.0001" />
+            </div>
+          </div>
+        </div>
+        <div class="outbox" aria-live="polite">
+          <div class="value-inline" id="fFromLambda">—<span class="u"></span></div>
+        </div>
+      </div>
+    </form>
+
+    <!-- Distancia según el período -->
+    <form class="card" onsubmit="return false;">
+      <div class="row">
+        <div>
+          <div class="calc-title">Distancia según el período</div>
+          <div class="fieldline">
+            <div class="unit-left">T (s)</div>
+            <div class="input-wrap">
+              <input id="period" type="number" min="0" step="0.0001" />
+            </div>
+          </div>
+        </div>
+        <div class="outbox" aria-live="polite">
+          <div class="value-inline" id="dFromPeriod">—<span class="u"></span></div>
+        </div>
+      </div>
+    </form>
+
+
+        <!-- 1) Tiempo según la distancia -->
+    <form class="card" onsubmit="return false;">
+      <div class="row">
+        <div>
+          <div class="calc-title">Tiempo según la distancia</div>
+          <div class="fieldline">
+            <div class="unit-left">d (m)</div>
+            <input id="dist" type="number" min="0" step="0.0001" />
+          </div>
+        </div>
+        <div class="outbox" aria-live="polite">
+          <div class="value-inline" id="tFromD">—<span class="u">s</span></div>
+          <div class="value-inline"   id="tFromDms">—<span class="u">ms</span></div>
+        </div>
+      </div>
+    </form>
+
+    <!-- 2) Frecuencia según el período -->
+    <form class="card" onsubmit="return false;">
+      <div class="row">
+        <div>
+          <div class="calc-title">Frecuencia según el período</div>
+          <div class="fieldline">
+            <div class="unit-left">T (s)</div>
+            <input id="TtoF" type="number" min="0" step="0.000001" />
+          </div>
+        </div>
+        <div class="outbox" aria-live="polite">
+          <div class="value-inline" id="fFromT">—<span class="u">Hz</span></div>
+        </div>
+      </div>
+    </form>
+
+    <!-- 3) Período según la frecuencia -->
+    <form class="card" onsubmit="return false;">
+      <div class="row">
+        <div>
+          <div class="calc-title">Período según la frecuencia</div>
+          <div class="fieldline">
+            <div class="unit-left">F (Hz)</div>
+            <input id="FtoT" type="number" min="0" step="0.000001" />
+          </div>
+        </div>
+        <div class="outbox" aria-live="polite">
+          <div class="value-inline" id="tFromF">—<span class="u">s</span></div>
+          <div class="value-inline"   id="tFromFms">—<span class="u">ms</span></div>
+          <div class="value-inline"   id="tFromFmsQuarter">—<span class="u">ms (¼T)</span></div>
+        </div>
+      </div>
+    </form>
+
+
+  </div>
+
+<script>
+  const nf = new Intl.NumberFormat('es-ES', { maximumFractionDigits: 6 });
+  const $  = (s) => document.querySelector(s);
+
+  // Inputs existentes
+  const tempInput     = $('#temp');
+  const cValEl        = $('#cVal');
+  const freqInput     = $('#freq');
+  const lambdaFromFEl = $('#lambdaFromF');
+  const lambdaInput   = $('#lambda');
+  const fFromLambdaEl = $('#fFromLambda');
+  const periodInput   = $('#period');
+  const dFromPeriodEl = $('#dFromPeriod');
+
+  // Nuevos inputs/outputs
+  const distInput     = $('#dist');
+  const tFromDEl      = $('#tFromD');
+  const tFromDmsEl    = $('#tFromDms');
+
+  const TtoFInput     = $('#TtoF');
+  const fFromTEl      = $('#fFromT');
+
+  const FtoTInput     = $('#FtoT');
+  const tFromFEl      = $('#tFromF');
+  const tFromFmsEl    = $('#tFromFms');
+  const tFromFmsQEl   = $('#tFromFmsQuarter');
+
+  function setValue(el, val, unit){
+    if (Number.isFinite(val)){
+      el.innerHTML = nf.format(val) + '<span class="u"> ' + unit + '</span>';
+    } else {
+      el.innerHTML = '—<span class="u"> ' + unit + '</span>';
+    }
+  }
+
+  // c(T) = 331.4 + 0.6*T
+  function calcC(){
+    const T = parseFloat(tempInput.value);
+    if (isFinite(T)){
+      const c = 331.4 + 0.6 * T;
+      setValue(cValEl, c, 'm/s');
+      return c;
+    } else { setValue(cValEl, NaN, 'm/s'); return NaN; }
+  }
+
+  function recompute(){
+    const c = calcC();
+
+    // λ = c / f
+    const f = parseFloat(freqInput.value);
+    const lambdaFromF = (isFinite(c) && isFinite(f) && f > 0) ? c/f : NaN;
+    setValue(lambdaFromFEl, lambdaFromF, 'm');
+
+    // f = c / λ
+    const lambda = parseFloat(lambdaInput.value);
+    const fFromL = (isFinite(c) && isFinite(lambda) && lambda > 0) ? c/lambda : NaN;
+    setValue(fFromLambdaEl, fFromL, 'Hz');
+
+    // d = T × c
+    const Tper = parseFloat(periodInput.value);
+    const d = (isFinite(c) && isFinite(Tper) && Tper >= 0) ? Tper*c : NaN;
+    setValue(dFromPeriodEl, d, 'm');
+
+    // ───── Nuevas ─────
+
+    // 1) Tiempo según distancia: t = d / c; ms = t*1000
+    const dIn = parseFloat(distInput?.value);
+    const tFromD = (isFinite(c) && isFinite(dIn) && dIn >= 0 && c > 0) ? dIn / c : NaN;
+    const tFromDms = Number.isFinite(tFromD) ? (tFromD * 1000) : NaN;
+    setValue(tFromDEl,  tFromD,  's');
+    setValue(tFromDmsEl, tFromDms,'ms');
+
+    // 2) Frecuencia según el período: f = 1/T
+    const TforF = parseFloat(TtoFInput?.value);
+    const fFromT = (isFinite(TforF) && TforF > 0) ? (1 / TforF) : NaN;
+    setValue(fFromTEl, fFromT, 'Hz');
+
+    // 3) Período según la frecuencia: T = 1/f; en ms y ¼T en ms
+    const FforT = parseFloat(FtoTInput?.value);
+    const tFromF = (isFinite(FforT) && FforT > 0) ? (1 / FforT) : NaN;
+    const tFromFms = Number.isFinite(tFromF) ? (tFromF * 1000) : NaN;
+    const tFromFmsQuarter = Number.isFinite(tFromFms) ? (tFromFms / 4) : NaN;
+
+    setValue(tFromFEl,  tFromF,  's');
+    setValue(tFromFmsEl, tFromFms,'ms');
+    // mostramos "ms (¼T)" como unidad pedida
+    if (Number.isFinite(tFromFmsQuarter)){
+      tFromFmsQEl.innerHTML = nf.format(tFromFmsQuarter) + '<span class="u"> ms (¼T)</span>';
+    } else {
+      tFromFmsQEl.innerHTML = '—<span class="u"> ms (¼T)</span>';
+    }
+  }
+
+  ['input','change'].forEach(ev=>{
+    [
+      '#temp','#freq','#lambda','#period',
+      '#dist','#TtoF','#FtoT'
+    ].forEach(sel=>{
+      const el = document.querySelector(sel);
+      if (el) el.addEventListener(ev, recompute);
+    });
+  });
+
+  recompute();</script>
+</body>
+</html>
