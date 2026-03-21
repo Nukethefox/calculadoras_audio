@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Arreglos de subgraves</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page">
+
+    <div class="navbar">
+      <ul style="display: flex; list-style: none;">
+        <li><button class="navbutton" onclick="location.href='index.html'">Conversión unidades acústicas</button></li>
+        <li><button class="navbutton" onclick="location.href='electricity_units.html'">Conversión unidades eléctricas</button></li>
+        <li><button class="navbutton" onclick="location.href='db_units.html'">Calculos de dB</button></li>
+        <li><button class="navbutton" onclick="location.href='impedance.html'">Compatibilidad entre etapas y altavoces</button></li>
+        <li><button class="navbutton selected" onclick="location.href='subwoofers.html'">Arreglos de subgraves</button></li>
+        <li><button class="navbutton" onclick="location.href='xover.html'">Compatibilidad de filtros X-Over</button></li>
+      </ul>
+    </div>
+
+    <h1>Arreglos de subgraves</h1>
+    <p>en calculos de arreglos (sub): calculo arreglo en linea, calculo arco, claculo gradiente y end fired</p>
+
+    <form class="card" onsubmit="return false;">
+      <div class="row">
+        <div>
+          <div class="calc-title">Velocidad de propagación del sonido en el aire</div>
+          <div class="fieldline">
+            <div class="unit-left">Temp. actual (°C)</div>
+            <div class="input-wrap">
+              <input id="temp" type="number" step="0.1" value="15" />
+            </div>
+          </div>
+          <div class="small">Este calculo afecta a las demás calculadoras.</div>
+        </div>
+        <div class="outbox" aria-live="polite">
+          <div class="value-inline" id="cVal">343,4<span class="u">m/s</span></div>
+        </div>
+      </div>
+    </form>
+
+    <form class="card" onsubmit="return false;">
+      <div class="row">
+        <div>
+          <div class="calc-title">Evitar "comb-filter"</div>
+          <div class="fieldline">
+            <div class="unit-left">Frq de corte del filtro low-pass (Hz)</div>
+            <div class="input-wrap">
+              <input id="cfFreq" type="number" step="0.1" />
+            </div>
+          </div>
+          <div class="small">Esta es la distancia maxima que puedes separar los subs para evitar comb-filter.</div>
+        </div>
+        <div class="outbox" aria-live="polite">
+          <div class="value-inline" id="cfMaxDist">-<span class="u">m</span></div>
+        </div>
+      </div>
+    </form>
+
+
+    <form class="card" onsubmit="return false;">
+      <div class="row">
+        <div>
+          <div class="calc-title">Calculo arreglo en línea</div>
+          <div class="fieldline">
+            <div class="unit-left">Frq deseada a 76º (Hz)</div>
+            <div class="input-wrap"><input id="Frq76" type="number" step="0.1" /></div>
+            <div class="unit-left">Nº de subs disponibles</div>
+            <div class="input-wrap"><input id="NroSubs" type="number" step="0.1" /></div>
+          </div>
+          <div class="small">Usa este arreglo para obtener una cobertura horizontal de 76º a la Frq deseada. Recuerda, a más frequencia, cobertura más estrecha, y a menos frequencia, cobertura más ancha.</div>
+        </div>
+        <div class="outbox" aria-live="polite">
+            <div class="value-inline" id="TotArregLinea">-<span class="u">m totales arreglo</span></div>
+            <div class="value-inline" id="SeparacionArregLinea">-<span class="u">m entre subs</span></div>
+            <div class="value-inline" id="ColapsoLateralLinea">-<span class="u">Hz colapso lateral</span></div>
+        </div>
+      </div>
+    </form>
+
+    <form class="card" onsubmit="return false;">
+      <div class="row">
+        <div>
+          <div class="calc-title">Calculo arreglo Gradiente</div>
+          <div class="fieldline">
+            <div class="unit-left">Frq de trabajo (Hz)</div>
+            <div class="input-wrap"><input id="" type="number" step="0.1" /></div>
+          </div>
+          <div class="small">Usa gradiente para priorizar a los músicos (en el escenario se cancela sub totalmente, al público "lanzamos" solo la Frq elegida)</div>
+        </div>
+        <div class="outbox" aria-live="polite">
+            <div class="value-inline" id="">-<span class="u">separación subs (m)</span></div>
+            <div class="value-inline" id="">-<span class="u">ms delay sub trasero (con inversión Ø)</span></div>
+        </div>
+      </div>
+    </form>
+
+        <form class="card" onsubmit="return false;">
+      <div class="row">
+        <div>
+          <div class="calc-title">Calculo arreglo Gradiente Stack Invertido</div>
+          <div class="fieldline">
+            <div class="unit-left">Tamaño de la caja acústica (m)</div>
+            <div class="input-wrap"><input id="" type="number" step="0.1" /></div>
+          </div>
+          <div class="small"></div>
+        </div>
+        <div class="outbox" aria-live="polite">
+            <div class="value-inline" id="">-<span class="u">Hz Frq de trabajo</span></div>
+            <div class="value-inline" id="">-<span class="u">ms delay sub trasero (sin inversión Ø)</span></div>
+        </div>
+      </div>
+    </form>
+
+    
+    <form class="card" onsubmit="return false;">
+      <div class="row">
+        <div>
+          <div class="calc-title">Calculo arreglo End-Fired</div>
+          <div class="fieldline">
+            <div class="unit-left">Frq de trabajo (Hz)</div>
+            <div class="input-wrap"><input id="" type="number" step="0.1" /></div>
+          </div>
+          <div class="small">Usa end-fired para priorizar al público (en el escenario no se cancela sub totalmente, al público "lanzamos" todas las Frq de sub)</div>
+        </div>
+        <div class="outbox" aria-live="polite">
+            <div class="value-inline" id="">-<span class="u">separación subs (m)</span></div>
+            <div class="value-inline" id="">-<span class="u">ms delay sub trasero (sin inversión Ø)</span></div>
+        </div>
+      </div>
+    </form>
+
+            <form class="card" onsubmit="return false;">
+      <div class="row">
+        <div>
+          <div class="calc-title">Calculo arreglo End-Fired Stack Invertido</div>
+          <div class="fieldline">
+            <div class="unit-left">Tamaño de la caja acústica (m)</div>
+            <div class="input-wrap"><input id="" type="number" step="0.1" /></div>
+          </div>
+          <div class="small"></div>
+        </div>
+        <div class="outbox" aria-live="polite">
+            <div class="value-inline" id="">-<span class="u">Hz Frq de trabajo</span></div>
+            <div class="value-inline" id="">-<span class="u">ms delay sub trasero (sin inversión Ø)</span></div>
+        </div>
+      </div>
+    </form>
+
+
+
+   
+  </div>
+
+<script>
+  const nf = new Intl.NumberFormat('es-ES', { maximumFractionDigits: 6 });
+  const $  = (s) => document.querySelector(s);
+
+  // Inputs velocidad de propagacion
+  const tempInput = $('#temp');
+  const cValEl    = $('#cVal');
+
+  // Inputs Comb Filter
+  const cutFreqInput = document.getElementById('cfFreq');
+  const cfMaxDistEl  = document.getElementById('cfMaxDist');
+
+  // Inputs Arreglo en linea
+  const Frq76Input       = document.getElementById('Frq76');
+  const NroSubsInput     = document.getElementById('NroSubs');
+  const TotArregLineaEl       = document.getElementById('TotArregLinea');
+  const SeparacionArregLineaEl = document.getElementById('SeparacionArregLinea');
+  const ColapsoLateralLineaEl = document.getElementById('ColapsoLateralLinea');
+
+  // Función genérica para actualizar resultados
+  function setValue(el, val, unit){
+    if (Number.isFinite(val)){
+      el.innerHTML = nf.format(val) + '<span class="u"> ' + unit + '</span>';
+    } else {
+      el.innerHTML = '—<span class="u"> ' + unit + '</span>';
+    }
+  }
+
+  function setValueCF(el, val, unit){
+    if (Number.isFinite(val)){
+      el.innerHTML = nf.format(val) + '<span class="u"> ' + unit + '</span>';
+    } else {
+      el.innerHTML = '—<span class="u"> ' + unit + '</span>';
+    }
+  }
+
+  // Velocidad de propagación según temperatura
+  function calcC(){
+    const T = parseFloat(tempInput.value);
+    if (isFinite(T)){
+      const c = 331.4 + 0.6 * T;
+      setValue(cValEl, c, 'm/s');
+      return c;
+    } else {
+      setValue(cValEl, NaN, 'm/s');
+      return NaN;
+    }
+  }
+
+  // Comb Filter
+  function recomputeCF(){
+    const c = calcC();
+    const fCut = parseFloat(cutFreqInput.value);
+    const maxDist = (isFinite(c) && isFinite(fCut) && fCut > 0) ? (c / fCut) / 2 : NaN;
+    setValueCF(cfMaxDistEl, maxDist, 'metros');
+  }
+
+  // Arreglo en línea
+  function recomputeArregloLinea() {
+    const c = calcC();
+    const f = parseFloat(Frq76Input.value);
+    const n = parseFloat(NroSubsInput.value);
+
+    const totalArr = (isFinite(c) && isFinite(f) && f > 0) ? (c / f) : NaN;
+    const sepSubs  = (isFinite(totalArr) && isFinite(n) && n > 1) ? (totalArr / (n - 1)) : NaN;
+    const colapsLat = (isFinite(c) && isFinite(sepSubs) && sepSubs > 0) ? (c / sepSubs) : NaN;
+
+    setValue(TotArregLineaEl, totalArr, 'm totales arreglo');
+    setValue(SeparacionArregLineaEl, sepSubs, 'm entre subs');
+    setValue(ColapsoLateralLineaEl, colapsLat, 'Hz colapso lateral');
+  }
+
+  // Función principal que se ejecuta al cambiar temperatura
+  function recompute(){
+    calcC();               // Actualiza velocidad
+    recomputeCF();          // Actualiza Comb Filter
+    recomputeArregloLinea(); // Actualiza Arreglo en línea
+  }
+
+  // Eventos
+  ['input','change'].forEach(ev=>{
+    tempInput.addEventListener(ev, recompute);
+    cutFreqInput.addEventListener(ev, recomputeCF);
+    Frq76Input.addEventListener(ev, recomputeArregloLinea);
+    NroSubsInput.addEventListener(ev, recomputeArregloLinea);
+  });
+
+  // Inicial
+  recompute();
+</script>
+
+
+</body>
+</html>
