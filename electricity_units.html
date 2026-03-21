@@ -19,10 +19,7 @@
         <li><button class="navbutton" onclick="location.href='xover.html'">Compatibilidad de filtros X-Over</button></li>
       </ul>
     </div>
-
     <h1>Conversión de unidades de electricidad</h1>
-
-    <!-- Voltaje -->
     <form class="card" onsubmit="return false;">
       <div class="row">
         <div>
@@ -41,8 +38,6 @@
         </div>
       </div>
     </form>
-
-    <!-- Intensidad -->
     <form class="card" onsubmit="return false;">
       <div class="row">
         <div>
@@ -61,8 +56,6 @@
         </div>
       </div>
     </form>
-
-    <!-- Corriente desde potencia -->
     <form class="card" onsubmit="return false;">
       <div class="row">
         <div>
@@ -81,8 +74,6 @@
         </div>
       </div>
     </form>
-
-    <!-- Resistencia -->
     <form class="card" onsubmit="return false;">
       <div class="row">
         <div>
@@ -101,8 +92,6 @@
         </div>
       </div>
     </form>
-
-    <!-- Potencia -->
     <form class="card" onsubmit="return false;">
       <div class="row">
         <div>
@@ -121,7 +110,6 @@
         </div>
       </div>
     </form>
-
   </div>
 
 <script>
@@ -132,27 +120,22 @@ function setValue(el, val, unit){
   else el.innerHTML = '—<span class="u"> ' + unit + '</span>';
 }
 function recompute(){
-  // Voltaje V = I * R
   const I = parseFloat($('#volt_I').value);
   const R1 = parseFloat($('#volt_R').value);
   setValue($('#volt_out'), (isFinite(I)&&isFinite(R1))? I*R1:NaN, 'V');
 
-  // Corriente I = V / R
   const V2 = parseFloat($('#amp_V').value);
   const R2 = parseFloat($('#amp_R').value);
   setValue($('#amp_out'), (isFinite(V2)&&isFinite(R2)&&R2!=0)? V2/R2:NaN, 'A');
 
-  // Corriente desde potencia I = P / V
   const P3 = parseFloat($('#ampP_P').value);
   const V3 = parseFloat($('#ampP_V').value);
   setValue($('#ampP_out'), (isFinite(P3)&&isFinite(V3)&&V3!=0)? P3/V3:NaN, 'A');
 
-  // Resistencia R = V / I
   const V4 = parseFloat($('#res_V').value);
   const I4 = parseFloat($('#res_I').value);
   setValue($('#res_out'), (isFinite(V4)&&isFinite(I4)&&I4!=0)? V4/I4:NaN, 'Ω');
 
-  // Potencia P = V * I
   const V5 = parseFloat($('#pow_V').value);
   const I5 = parseFloat($('#pow_I').value);
   setValue($('#pow_out'), (isFinite(V5)&&isFinite(I5))? V5*I5:NaN, 'W');
