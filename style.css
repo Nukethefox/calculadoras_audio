@@ -9,7 +9,6 @@
   }
   .page { max-width: 1000px; margin: 18px auto; padding: 0 16px; }
 
-  /* --- Navbar (tu estilo) --- */
   .navbar {
     background:#111827;
     border:1px solid #1f2937;
@@ -53,7 +52,6 @@
   }
 
 
-  /* --- Títulos --- */
   h1 {
     text-align: center;
     margin: 10px 0 20px;
@@ -61,7 +59,6 @@
     letter-spacing: .2px;
   }
 
-  /* --- Tarjetas / formularios (mi estilo suavizado para encajar colores) --- */
   .card{
     background:#3b3e87;
     border:0px none;
@@ -71,7 +68,6 @@
     margin-bottom:14px;
   }
 
-  /* Fila: izquierda (inputs) + derecha (salida) */
   .row{
     display:grid;
     grid-template-columns: 1fr minmax(240px, 30ch);
@@ -82,14 +78,12 @@
     .row{ grid-template-columns:1fr; }
   }
 
-  /* Encabezado de cada calculadora */
   .calc-title{
     font-size: 18px;
     font-weight: 700;
     margin: 0 0 8px 0;
   }
 
-  /* Línea de campo: unidad a la izquierda + input a la derecha */
   .fieldline{
     display: grid;
     grid-template-columns: auto max-content;
@@ -99,7 +93,7 @@
     justify-content: start;
   }
   .unit-left{
-    color:#cfd2d6;        /* mismo tono que títulos */
+    color:#cfd2d6; 
     font-size:18px;
     min-width: 28px;
     text-align: right;
@@ -109,7 +103,7 @@
     align-items:center;
   }
   input[type="number"]{
-    width: 160px;               /* más corto */
+    width: 160px;               
     padding:10px 12px;
     background:#1f2937; 
     color:#e5e7eb;
@@ -121,7 +115,6 @@
   }
   input[type="number"]:focus{ border-color:#38bdf8; box-shadow:0 0 0 3px rgba(56,189,248,.12); }
 
-  /* Caja de salida: valor y unidad en línea */
   .outbox{
     background:#1f2937;
     border:0px none;
@@ -140,11 +133,10 @@
     color:#e5e7eb;
   }
   .value-inline .u{
-    margin-left: 8px; /* unidad a la derecha del número */
+    margin-left: 8px; 
     font-weight: 700;
     font-size: 22px;
     color:#e5e7eb;
   }
 
-  /* Tip auxiliar reducido */
   .small{ font-size:.9rem; color:#9ca3af; margin-top:4px; }
