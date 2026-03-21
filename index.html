@@ -3,25 +3,23 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Unidades de sonido</title>
+<title>Unidades acústicas</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="page">
-
-    <!-- NAVBAR -->
     <div class="navbar">
       <ul style="display: flex; list-style: none;">
-        <li><button class="navbutton selected" onclick="location.href='index.html'">Unidades de sonido</button></li>
-        <li><button class="navbutton" onclick="location.href='electricity_units.html'">Unidades electricidad</button></li>
-        <li><button class="navbutton" onclick="location.href='qnh.html'">Impedancias y etapas</button></li>
-        <li><button class="navbutton" onclick="location.href='taxi_calc.html'">Ajustes de subgraves</button></li>
-        <li><button class="navbutton" onclick="location.href='speed_calc.html'">TRAFFIC SPEEDS & CONFLICTS</button></li>
-        <li><button class="navbutton" onclick="location.href='traffic_sep.html'">WAKE TURBULENCE SEPARATION</button></li>
+        <li><button class="navbutton selected" onclick="location.href='index.html'">Conversión unidades acústicas</button></li>
+        <li><button class="navbutton" onclick="location.href='electricity_units.html'">Conversión unidades eléctricas</button></li>
+        <li><button class="navbutton" onclick="location.href='db_units.html'">Calculos de dB</button></li>
+        <li><button class="navbutton" onclick="location.href='impedance.html'">Compatibilidad entre etapas y altavoces</button></li>
+        <li><button class="navbutton" onclick="location.href='subwoofers.html'">Arreglos de subgraves</button></li>
+        <li><button class="navbutton" onclick="location.href='xover.html'">Compatibilidad de filtros X-Over</button></li>
       </ul>
     </div>
 
-    <h1>Calculadoras de sonido</h1>
+    <h1>Conversión de unidades acústicas</h1>
 
     <!-- Temperatura → Velocidad -->
     <form class="card" onsubmit="return false;">
@@ -34,7 +32,7 @@
               <input id="temp" type="number" step="0.1" value="15" />
             </div>
           </div>
-          <div class="small">Este calculo afecta a las demás calculadoras</div>
+          <div class="small">Este calculo afecta a las demás calculadoras.</div>
         </div>
         <div class="outbox" aria-live="polite">
           <div class="value-inline" id="cVal">343,4<span class="u">m/s</span></div>
@@ -55,7 +53,8 @@
           </div>
         </div>
         <div class="outbox" aria-live="polite">
-          <div class="value-inline" id="lambdaFromF">—<span class="u"></span></div>
+          <div class="value-inline" id="lambdaFromF">—<span class="u">m</span></div>
+          <div class="value-inline" id="lambdaQuarter">—<span class="u">m (¼λ)</span></div>
         </div>
       </div>
     </form>
@@ -203,6 +202,10 @@
     const f = parseFloat(freqInput.value);
     const lambdaFromF = (isFinite(c) && isFinite(f) && f > 0) ? c/f : NaN;
     setValue(lambdaFromFEl, lambdaFromF, 'm');
+
+    const lambdaQuarterEl = document.getElementById('lambdaQuarter');
+    const lambdaQuarter = Number.isFinite(lambdaFromF) ? (lambdaFromF / 4) : NaN;
+    setValue(lambdaQuarterEl, lambdaQuarter, 'm (¼λ)');
 
     // f = c / λ
     const lambda = parseFloat(lambdaInput.value);
