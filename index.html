@@ -18,10 +18,7 @@
         <li><button class="navbutton" onclick="location.href='xover.html'">Compatibilidad de filtros X-Over</button></li>
       </ul>
     </div>
-
     <h1>Conversión de unidades acústicas</h1>
-
-    <!-- Temperatura → Velocidad -->
     <form class="card" onsubmit="return false;">
       <div class="row">
         <div>
@@ -39,8 +36,6 @@
         </div>
       </div>
     </form>
-
-    <!-- Longitud de onda según frecuencia -->
     <form class="card" onsubmit="return false;">
       <div class="row">
         <div>
@@ -58,8 +53,6 @@
         </div>
       </div>
     </form>
-
-    <!-- Frecuencia según longitud de onda -->
     <form class="card" onsubmit="return false;">
       <div class="row">
         <div>
@@ -76,8 +69,6 @@
         </div>
       </div>
     </form>
-
-    <!-- Distancia según el período -->
     <form class="card" onsubmit="return false;">
       <div class="row">
         <div>
@@ -94,9 +85,6 @@
         </div>
       </div>
     </form>
-
-
-        <!-- 1) Tiempo según la distancia -->
     <form class="card" onsubmit="return false;">
       <div class="row">
         <div>
@@ -112,8 +100,6 @@
         </div>
       </div>
     </form>
-
-    <!-- 2) Frecuencia según el período -->
     <form class="card" onsubmit="return false;">
       <div class="row">
         <div>
@@ -128,8 +114,6 @@
         </div>
       </div>
     </form>
-
-    <!-- 3) Período según la frecuencia -->
     <form class="card" onsubmit="return false;">
       <div class="row">
         <div>
@@ -146,15 +130,10 @@
         </div>
       </div>
     </form>
-
-
   </div>
-
 <script>
   const nf = new Intl.NumberFormat('es-ES', { maximumFractionDigits: 6 });
   const $  = (s) => document.querySelector(s);
-
-  // Inputs existentes
   const tempInput     = $('#temp');
   const cValEl        = $('#cVal');
   const freqInput     = $('#freq');
@@ -163,15 +142,11 @@
   const fFromLambdaEl = $('#fFromLambda');
   const periodInput   = $('#period');
   const dFromPeriodEl = $('#dFromPeriod');
-
-  // Nuevos inputs/outputs
   const distInput     = $('#dist');
   const tFromDEl      = $('#tFromD');
   const tFromDmsEl    = $('#tFromDms');
-
   const TtoFInput     = $('#TtoF');
   const fFromTEl      = $('#fFromT');
-
   const FtoTInput     = $('#FtoT');
   const tFromFEl      = $('#tFromF');
   const tFromFmsEl    = $('#tFromFms');
@@ -185,7 +160,6 @@
     }
   }
 
-  // c(T) = 331.4 + 0.6*T
   function calcC(){
     const T = parseFloat(tempInput.value);
     if (isFinite(T)){
@@ -197,56 +171,38 @@
 
   function recompute(){
     const c = calcC();
-
-    // λ = c / f
     const f = parseFloat(freqInput.value);
     const lambdaFromF = (isFinite(c) && isFinite(f) && f > 0) ? c/f : NaN;
     setValue(lambdaFromFEl, lambdaFromF, 'm');
-
     const lambdaQuarterEl = document.getElementById('lambdaQuarter');
     const lambdaQuarter = Number.isFinite(lambdaFromF) ? (lambdaFromF / 4) : NaN;
     setValue(lambdaQuarterEl, lambdaQuarter, 'm (¼λ)');
-
-    // f = c / λ
     const lambda = parseFloat(lambdaInput.value);
     const fFromL = (isFinite(c) && isFinite(lambda) && lambda > 0) ? c/lambda : NaN;
     setValue(fFromLambdaEl, fFromL, 'Hz');
-
-    // d = T × c
     const Tper = parseFloat(periodInput.value);
     const d = (isFinite(c) && isFinite(Tper) && Tper >= 0) ? Tper*c : NaN;
     setValue(dFromPeriodEl, d, 'm');
-
-    // ───── Nuevas ─────
-
-    // 1) Tiempo según distancia: t = d / c; ms = t*1000
     const dIn = parseFloat(distInput?.value);
     const tFromD = (isFinite(c) && isFinite(dIn) && dIn >= 0 && c > 0) ? dIn / c : NaN;
     const tFromDms = Number.isFinite(tFromD) ? (tFromD * 1000) : NaN;
     setValue(tFromDEl,  tFromD,  's');
     setValue(tFromDmsEl, tFromDms,'ms');
-
-    // 2) Frecuencia según el período: f = 1/T
     const TforF = parseFloat(TtoFInput?.value);
     const fFromT = (isFinite(TforF) && TforF > 0) ? (1 / TforF) : NaN;
     setValue(fFromTEl, fFromT, 'Hz');
-
-    // 3) Período según la frecuencia: T = 1/f; en ms y ¼T en ms
     const FforT = parseFloat(FtoTInput?.value);
     const tFromF = (isFinite(FforT) && FforT > 0) ? (1 / FforT) : NaN;
     const tFromFms = Number.isFinite(tFromF) ? (tFromF * 1000) : NaN;
     const tFromFmsQuarter = Number.isFinite(tFromFms) ? (tFromFms / 4) : NaN;
-
     setValue(tFromFEl,  tFromF,  's');
     setValue(tFromFmsEl, tFromFms,'ms');
-    // mostramos "ms (¼T)" como unidad pedida
     if (Number.isFinite(tFromFmsQuarter)){
       tFromFmsQEl.innerHTML = nf.format(tFromFmsQuarter) + '<span class="u"> ms (¼T)</span>';
     } else {
       tFromFmsQEl.innerHTML = '—<span class="u"> ms (¼T)</span>';
     }
   }
-
   ['input','change'].forEach(ev=>{
     [
       '#temp','#freq','#lambda','#period',
@@ -256,7 +212,6 @@
       if (el) el.addEventListener(ev, recompute);
     });
   });
-
   recompute();</script>
 </body>
 </html>
