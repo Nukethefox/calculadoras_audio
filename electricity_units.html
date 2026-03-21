@@ -3,38 +3,163 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Unidades de sonido</title>
+<title>Unidades de electricidad</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="page">
 
-    <!-- NAVBAR -->
     <div class="navbar">
       <ul style="display: flex; list-style: none;">
-        <li><button class="navbutton" onclick="location.href='index.html'">Unidades de sonido</button></li>
-        <li><button class="navbutton selected" onclick="location.href='units.html'">Unidades electricidad</button></li>
-        <li><button class="navbutton" onclick="location.href='qnh.html'">Impedancias y etapas</button></li>
-        <li><button class="navbutton" onclick="location.href='taxi_calc.html'">Ajustes de subgraves</button></li>
-        <li><button class="navbutton" onclick="location.href='speed_calc.html'">TRAFFIC SPEEDS & CONFLICTS</button></li>
-        <li><button class="navbutton" onclick="location.href='traffic_sep.html'">WAKE TURBULENCE SEPARATION</button></li>
+        <li><button class="navbutton" onclick="location.href='index.html'">Conversión unidades acústicas</button></li>
+        <li><button class="navbutton selected" onclick="location.href='electricity_units.html'">Conversión unidades eléctricas</button></li>
+        <li><button class="navbutton" onclick="location.href='db_units.html'">Calculos de dB</button></li>
+        <li><button class="navbutton" onclick="location.href='impedance.html'">Compatibilidad entre etapas y altavoces</button></li>
+        <li><button class="navbutton" onclick="location.href='subwoofers.html'">Arreglos de subgraves</button></li>
+        <li><button class="navbutton" onclick="location.href='xover.html'">Compatibilidad de filtros X-Over</button></li>
       </ul>
     </div>
 
-    <h1>Calculadoras de electricidad/Ohm</h1>
+    <h1>Conversión de unidades de electricidad</h1>
 
+    <!-- Voltaje -->
+    <form class="card" onsubmit="return false;">
+      <div class="row">
+        <div>
+          <div class="calc-title">Voltaje o tensión</div>
+          <div class="fieldline">
+            <div class="unit-left">I (A)</div>
+            <input id="volt_I" type="number" step="0.0001" />
+          </div>
+          <div class="fieldline">
+            <div class="unit-left">R (Ω)</div>
+            <input id="volt_R" type="number" step="0.0001" />
+          </div>
+        </div>
+        <div class="outbox">
+          <div class="value-inline" id="volt_out">—<span class="u">V</span></div>
+        </div>
+      </div>
+    </form>
 
+    <!-- Intensidad -->
+    <form class="card" onsubmit="return false;">
+      <div class="row">
+        <div>
+          <div class="calc-title">Intensidad o corriente</div>
+          <div class="fieldline">
+            <div class="unit-left">V (V)</div>
+            <input id="amp_V" type="number" step="0.0001" />
+          </div>
+          <div class="fieldline">
+            <div class="unit-left">R (Ω)</div>
+            <input id="amp_R" type="number" step="0.0001" />
+          </div>
+        </div>
+        <div class="outbox">
+          <div class="value-inline" id="amp_out">—<span class="u">A</span></div>
+        </div>
+      </div>
+    </form>
 
+    <!-- Corriente desde potencia -->
+    <form class="card" onsubmit="return false;">
+      <div class="row">
+        <div>
+          <div class="calc-title">Intensidad a partir de la potencia</div>
+          <div class="fieldline">
+            <div class="unit-left">P (W)</div>
+            <input id="ampP_P" type="number" step="0.0001" />
+          </div>
+          <div class="fieldline">
+            <div class="unit-left">V (V)</div>
+            <input id="ampP_V" type="number" step="0.0001" />
+          </div>
+        </div>
+        <div class="outbox">
+          <div class="value-inline" id="ampP_out">—<span class="u">A</span></div>
+        </div>
+      </div>
+    </form>
 
+    <!-- Resistencia -->
+    <form class="card" onsubmit="return false;">
+      <div class="row">
+        <div>
+          <div class="calc-title">Resistencia o impedancia</div>
+          <div class="fieldline">
+            <div class="unit-left">V (V)</div>
+            <input id="res_V" type="number" step="0.0001" />
+          </div>
+          <div class="fieldline">
+            <div class="unit-left">I (A)</div>
+            <input id="res_I" type="number" step="0.0001" />
+          </div>
+        </div>
+        <div class="outbox">
+          <div class="value-inline" id="res_out">—<span class="u">Ω</span></div>
+        </div>
+      </div>
+    </form>
 
-
+    <!-- Potencia -->
+    <form class="card" onsubmit="return false;">
+      <div class="row">
+        <div>
+          <div class="calc-title">Potencia eléctrica</div>
+          <div class="fieldline">
+            <div class="unit-left">V (V)</div>
+            <input id="pow_V" type="number" step="0.0001" />
+          </div>
+          <div class="fieldline">
+            <div class="unit-left">I (A)</div>
+            <input id="pow_I" type="number" step="0.0001" />
+          </div>
+        </div>
+        <div class="outbox">
+          <div class="value-inline" id="pow_out">—<span class="u">W</span></div>
+        </div>
+      </div>
+    </form>
 
   </div>
 
 <script>
+const nf = new Intl.NumberFormat('es-ES', { maximumFractionDigits: 6 });
+const $  = (s) => document.querySelector(s);
+function setValue(el, val, unit){
+  if (Number.isFinite(val)) el.innerHTML = nf.format(val) + '<span class="u"> ' + unit + '</span>';
+  else el.innerHTML = '—<span class="u"> ' + unit + '</span>';
+}
+function recompute(){
+  // Voltaje V = I * R
+  const I = parseFloat($('#volt_I').value);
+  const R1 = parseFloat($('#volt_R').value);
+  setValue($('#volt_out'), (isFinite(I)&&isFinite(R1))? I*R1:NaN, 'V');
 
+  // Corriente I = V / R
+  const V2 = parseFloat($('#amp_V').value);
+  const R2 = parseFloat($('#amp_R').value);
+  setValue($('#amp_out'), (isFinite(V2)&&isFinite(R2)&&R2!=0)? V2/R2:NaN, 'A');
 
+  // Corriente desde potencia I = P / V
+  const P3 = parseFloat($('#ampP_P').value);
+  const V3 = parseFloat($('#ampP_V').value);
+  setValue($('#ampP_out'), (isFinite(P3)&&isFinite(V3)&&V3!=0)? P3/V3:NaN, 'A');
 
+  // Resistencia R = V / I
+  const V4 = parseFloat($('#res_V').value);
+  const I4 = parseFloat($('#res_I').value);
+  setValue($('#res_out'), (isFinite(V4)&&isFinite(I4)&&I4!=0)? V4/I4:NaN, 'Ω');
+
+  // Potencia P = V * I
+  const V5 = parseFloat($('#pow_V').value);
+  const I5 = parseFloat($('#pow_I').value);
+  setValue($('#pow_out'), (isFinite(V5)&&isFinite(I5))? V5*I5:NaN, 'W');
+}
+['input','change'].forEach(ev=>{
+  document.querySelectorAll('input').forEach(inp=>inp.addEventListener(ev,recompute));
+});
 </script>
 </body>
 </html>
