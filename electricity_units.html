@@ -12,9 +12,10 @@
       <ul style="display: flex; list-style: none;">
         <li><button class="navbutton" onclick="location.href='index.html'">Conversión unidades acústicas</button></li>
         <li><button class="navbutton selected" onclick="location.href='electricity_units.html'">Conversión unidades eléctricas</button></li>
-        <li><button class="navbutton" onclick="location.href='db_units.html'">Calculos de dB</button></li>
-        <li><button class="navbutton" onclick="location.href='impedance.html'">Compatibilidad entre etapas y altavoces</button></li>
+        <li><button class="navbutton" onclick="location.href='db_units.html'">Cálculos de dB y potencia</button></li>
+        <li><button class="navbutton" onclick="location.href='impedance.html'">Impedancias entre etapas y altavoces</button></li>
         <li><button class="navbutton" onclick="location.href='subwoofers.html'">Arreglos de subgraves</button></li>
+        <li><button class="navbutton" onclick="location.href='full_range.html'">Arreglos de full-range</button></li>
         <li><button class="navbutton" onclick="location.href='xover.html'">Compatibilidad de filtros X-Over</button></li>
       </ul>
     </div>
@@ -33,10 +34,11 @@
           </div>
         </div>
         <div class="outbox">
-          <div class="value-inline" id="volt_out">—<span class="u">V</span></div>
+          <div class="value-inline" id="volt_out">—<span class="unit">V</span></div>
         </div>
       </div>
     </form>
+    <br>
     <form class="card" onsubmit="return false;">
       <div class="row">
         <div>
@@ -51,7 +53,7 @@
           </div>
         </div>
         <div class="outbox">
-          <div class="value-inline" id="amp_out">—<span class="u">A</span></div>
+          <div class="value-inline" id="amp_out">—<span class="unit">A</span></div>
         </div>
       </div>
     </form>
@@ -69,10 +71,11 @@
           </div>
         </div>
         <div class="outbox">
-          <div class="value-inline" id="ampP_out">—<span class="u">A</span></div>
+          <div class="value-inline" id="ampP_out">—<span class="unit">A</span></div>
         </div>
       </div>
     </form>
+    <br>
     <form class="card" onsubmit="return false;">
       <div class="row">
         <div>
@@ -87,10 +90,11 @@
           </div>
         </div>
         <div class="outbox">
-          <div class="value-inline" id="res_out">—<span class="u">Ω</span></div>
+          <div class="value-inline" id="res_out">—<span class="unit">Ω</span></div>
         </div>
       </div>
     </form>
+    <br>
     <form class="card" onsubmit="return false;">
       <div class="row">
         <div>
@@ -105,7 +109,7 @@
           </div>
         </div>
         <div class="outbox">
-          <div class="value-inline" id="pow_out">—<span class="u">W</span></div>
+          <div class="value-inline" id="pow_out">—<span class="unit">W</span></div>
         </div>
       </div>
     </form>
@@ -114,8 +118,8 @@
 const nf = new Intl.NumberFormat('es-ES', { maximumFractionDigits: 6 });
 const $  = (s) => document.querySelector(s);
 function setValue(el, val, unit){
-  if (Number.isFinite(val)) el.innerHTML = nf.format(val) + '<span class="u"> ' + unit + '</span>';
-  else el.innerHTML = '—<span class="u"> ' + unit + '</span>';
+  if (Number.isFinite(val)) el.innerHTML = nf.format(val) + '<span class="unit"> ' + unit + '</span>';
+  else el.innerHTML = '—<span class="unit"> ' + unit + '</span>';
 }
 function recompute(){
   const I = parseFloat($('#volt_I').value);
