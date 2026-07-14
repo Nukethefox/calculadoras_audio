@@ -3,31 +3,147 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Calculos etapas y altavoces</title>
+<title>Impedancias etapas y altavoces</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="page">
-
     <div class="navbar">
       <ul style="display: flex; list-style: none;">
         <li><button class="navbutton" onclick="location.href='index.html'">Conversión unidades acústicas</button></li>
         <li><button class="navbutton" onclick="location.href='electricity_units.html'">Conversión unidades eléctricas</button></li>
-        <li><button class="navbutton" onclick="location.href='db_units.html'">Calculos de dB</button></li>
-        <li><button class="navbutton selected" onclick="location.href='impedance.html'">Compatibilidad entre etapas y altavoces</button></li>
+        <li><button class="navbutton" onclick="location.href='db_units.html'">Cálculos de dB y potencia</button></li>
+        <li><button class="navbutton selected" onclick="location.href='impedance.html'">Impedancias entre etapas y altavoces</button></li>
         <li><button class="navbutton" onclick="location.href='subwoofers.html'">Arreglos de subgraves</button></li>
+        <li><button class="navbutton" onclick="location.href='full_range.html'">Arreglos de full-range</button></li>
         <li><button class="navbutton" onclick="location.href='xover.html'">Compatibilidad de filtros X-Over</button></li>
       </ul>
     </div>
+    <h1>Impedancias entre etapas y altavoces</h1>
+    <form class="card" onsubmit="return false;">
+      <div class="row">
+        <div>
+          <p class="small">En paralelo es el uso más comun con cables SpeakON</p>
+          <div class="calc-title">Calculo impedancias en serie</div>
+          <div class="fieldline">
+            <div class="unit-left">Impedancia 1 (Ω)</div>
+            <div class="input-wrap"><input id="seriesZ1" type="number" step="0.1" /></div>
+          </div>
+          <div class="fieldline">
+            <div class="unit-left">Impedancia 2 (Ω)</div>
+            <div class="input-wrap"><input id="seriesZ2" type="number" step="0.1" /></div>
+          </div>
+        </div>
+        <div class="outbox" aria-live="polite">
+            <div class="value-inline" id="seriesOut">-<span class="unit">Ω</span></div>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div>
+          <div class="calc-title">Calculo impedancias en paralelo</div>
+          <div class="fieldline">
+            <div class="unit-left">Impedancia 1 (Ω)</div>
+            <div class="input-wrap"><input id="parallelZ1" type="number" step="0.1" /></div>
+          </div>
+          <div class="fieldline">
+            <div class="unit-left">Impedancia 2 (Ω)</div>
+            <div class="input-wrap"><input id="parallelZ2" type="number" step="0.1" /></div>
+          </div>
+        </div>
+        <div class="outbox" aria-live="polite">
+            <div class="value-inline" id="parallelOut">-<span class="unit">Ω</span></div>
+        </div>
+      </div>
+    </form>
+    <br>
+    <form class="card" onsubmit="return false;">
+      <div class="row">
+        <div>
+          <div class="calc-title">Impedancias de etapas y altavoces</div>
+          <div class="fieldline">
+            <div class="unit-left" style="text-align: left;">Impedancia de carga total (Ω)</div>
+            <div class="input-wrap"><input id="Zload" type="number" step="0.1" /></div>
+          </div>
+          <p class="small">La impedancia de carga total es el resultado de todos los altavoces conectados a un mismo canal de la etapa, tanto si estan en paralelo o en serie, o ambas. <br>Usa el apartado anterior para obtener la suma.</p>
+          <div class="fieldline">
+            <div class="unit-left">Impedancia del canal de la etapa (Ω)</div>
+            <div class="input-wrap"><input id="Zamp" type="number" step="0.1" /></div>
+          </div>
+        </div>
+        <div class="outbox" aria-live="polite">
+            <div class="value-inline" id="compatOut">-</div>
+        </div>
+      </div>
+    </form>
 
-    <h1>Compatibilidad entre etapas y altavoces</h1>
-    <p>en calculos de etapas y altavoces: calculo impedancias en serie/paralelo, y verificar si la etapa lo aguanta</p>
-
-   
   </div>
 
 <script>
+const sZ1 = document.getElementById('seriesZ1');
+const sZ2 = document.getElementById('seriesZ2');
+const sOut = document.getElementById('seriesOut');
 
+const pZ1 = document.getElementById('parallelZ1');
+const pZ2 = document.getElementById('parallelZ2');
+const pOut = document.getElementById('parallelOut');
+
+const zLoadInput = document.getElementById('Zload');
+const zAmpInput = document.getElementById('Zamp');
+const cOut = document.getElementById('compatOut');
+
+function calcSeries() {
+  const z1 = parseFloat(sZ1.value);
+  const z2 = parseFloat(sZ2.value);
+  
+  if (isNaN(z1) || isNaN(z2) || z1 < 0 || z2 < 0) {
+    sOut.innerHTML = '-<span class="unit">Ω</span>';
+    return;
+  }
+  
+  const result = z1 + z2;
+  sOut.innerHTML = `${result.toFixed(2)}<span class="unit">Ω</span>`;
+}
+
+function calcParallel() {
+  const z1 = parseFloat(pZ1.value);
+  const z2 = parseFloat(pZ2.value);
+  
+  if (isNaN(z1) || isNaN(z2) || z1 <= 0 || z2 <= 0) {
+    pOut.innerHTML = '-<span class="unit">Ω</span>';
+    return;
+  }
+  
+  const result = (z1 * z2) / (z1 + z2);
+  pOut.innerHTML = `${result.toFixed(2)}<span class="unit">Ω</span>`;
+}
+
+function checkCompatibility() {
+  const zLoad = parseFloat(zLoadInput.value);
+  const zAmp = parseFloat(zAmpInput.value);
+  
+  if (isNaN(zLoad) || isNaN(zAmp) || zLoad <= 0 || zAmp <= 0) {
+    cOut.innerHTML = '-';
+    return;
+  }
+  
+  if (zLoad < zAmp) {
+    cOut.innerHTML = 'El canal de la etapa se puede quemar, la impedancia total de los altavoces es demasiado pequeña para la etapa!';
+  } else if (zLoad > zAmp) {
+    cOut.innerHTML = 'Al tener más impedancia los altavoces que la etapa, obtendrás menos potencia de la que la etapa puede dar, pero no ocurrirá nada grave.';
+  } else {
+    cOut.innerHTML = 'Uso correcto de esta etapa con estos altavoces';
+  }
+}
+
+sZ1.addEventListener('input', calcSeries);
+sZ2.addEventListener('input', calcSeries);
+
+pZ1.addEventListener('input', calcParallel);
+pZ2.addEventListener('input', calcParallel);
+
+zLoadInput.addEventListener('input', checkCompatibility);
+zAmpInput.addEventListener('input', checkCompatibility);
 </script>
 </body>
 </html>
