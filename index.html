@@ -12,9 +12,10 @@
       <ul style="display: flex; list-style: none;">
         <li><button class="navbutton selected" onclick="location.href='index.html'">Conversión unidades acústicas</button></li>
         <li><button class="navbutton" onclick="location.href='electricity_units.html'">Conversión unidades eléctricas</button></li>
-        <li><button class="navbutton" onclick="location.href='db_units.html'">Calculos de dB</button></li>
-        <li><button class="navbutton" onclick="location.href='impedance.html'">Compatibilidad entre etapas y altavoces</button></li>
+        <li><button class="navbutton" onclick="location.href='db_units.html'">Calculos de dB y potencia</button></li>
+        <li><button class="navbutton" onclick="location.href='impedance.html'">Impedancias entre etapas y altavoces</button></li>
         <li><button class="navbutton" onclick="location.href='subwoofers.html'">Arreglos de subgraves</button></li>
+        <li><button class="navbutton" onclick="location.href='full_range.html'">Arreglos de full-range</button></li>
         <li><button class="navbutton" onclick="location.href='xover.html'">Compatibilidad de filtros X-Over</button></li>
       </ul>
     </div>
@@ -29,13 +30,14 @@
               <input id="temp" type="number" step="0.1" value="15" />
             </div>
           </div>
-          <div class="small">Este calculo afecta a las demás calculadoras.</div>
+          <div class="small"><b><u>Este calculo afecta a las demás calculadoras.</u></b></div>
         </div>
         <div class="outbox" aria-live="polite">
-          <div class="value-inline" id="cVal">343,4<span class="u">m/s</span></div>
+          <div class="value-inline" id="cVal">343,4<span class="unit">m/s</span></div>
         </div>
       </div>
     </form>
+    <br>
     <form class="card" onsubmit="return false;">
       <div class="row">
         <div>
@@ -48,8 +50,8 @@
           </div>
         </div>
         <div class="outbox" aria-live="polite">
-          <div class="value-inline" id="lambdaFromF">—<span class="u">m</span></div>
-          <div class="value-inline" id="lambdaQuarter">—<span class="u">m (¼λ)</span></div>
+          <div class="value-inline" id="lambdaFromF">—<span class="unit">m</span></div>
+          <div class="value-inline" id="lambdaQuarter">—<span class="unit">m (¼λ)</span></div>
         </div>
       </div>
     </form>
@@ -65,10 +67,11 @@
           </div>
         </div>
         <div class="outbox" aria-live="polite">
-          <div class="value-inline" id="fFromLambda">—<span class="u"></span></div>
+          <div class="value-inline" id="fFromLambda">—<span class="unit"></span></div>
         </div>
       </div>
     </form>
+    <br>
     <form class="card" onsubmit="return false;">
       <div class="row">
         <div>
@@ -81,25 +84,26 @@
           </div>
         </div>
         <div class="outbox" aria-live="polite">
-          <div class="value-inline" id="dFromPeriod">—<span class="u"></span></div>
+          <div class="value-inline" id="dFromPeriod">—<span class="unit"></span></div>
         </div>
       </div>
     </form>
     <form class="card" onsubmit="return false;">
       <div class="row">
         <div>
-          <div class="calc-title">Tiempo según la distancia</div>
+          <div class="calc-title">Tiempo según la distancia (aplicable para delay de altavoces)</div>
           <div class="fieldline">
             <div class="unit-left">d (m)</div>
             <input id="dist" type="number" min="0" step="0.0001" />
           </div>
         </div>
         <div class="outbox" aria-live="polite">
-          <div class="value-inline" id="tFromD">—<span class="u">s</span></div>
-          <div class="value-inline"   id="tFromDms">—<span class="u">ms</span></div>
+          <div class="value-inline" id="tFromD">—<span class="unit">s</span></div>
+          <div class="value-inline"   id="tFromDms">—<span class="unit">ms</span></div>
         </div>
       </div>
     </form>
+    <br>
     <form class="card" onsubmit="return false;">
       <div class="row">
         <div>
@@ -110,7 +114,7 @@
           </div>
         </div>
         <div class="outbox" aria-live="polite">
-          <div class="value-inline" id="fFromT">—<span class="u">Hz</span></div>
+          <div class="value-inline" id="fFromT">—<span class="unit">Hz</span></div>
         </div>
       </div>
     </form>
@@ -124,9 +128,9 @@
           </div>
         </div>
         <div class="outbox" aria-live="polite">
-          <div class="value-inline" id="tFromF">—<span class="u">s</span></div>
-          <div class="value-inline"   id="tFromFms">—<span class="u">ms</span></div>
-          <div class="value-inline"   id="tFromFmsQuarter">—<span class="u">ms (¼T)</span></div>
+          <div class="value-inline" id="tFromF">—<span class="unit">s</span></div>
+          <div class="value-inline"   id="tFromFms">—<span class="unit">ms</span></div>
+          <div class="value-inline"   id="tFromFmsQuarter">—<span class="unit">ms (¼T)</span></div>
         </div>
       </div>
     </form>
@@ -154,9 +158,9 @@
 
   function setValue(el, val, unit){
     if (Number.isFinite(val)){
-      el.innerHTML = nf.format(val) + '<span class="u"> ' + unit + '</span>';
+      el.innerHTML = nf.format(val) + '<span class="unit"> ' + unit + '</span>';
     } else {
-      el.innerHTML = '—<span class="u"> ' + unit + '</span>';
+      el.innerHTML = '—<span class="unit"> ' + unit + '</span>';
     }
   }
 
@@ -198,9 +202,9 @@
     setValue(tFromFEl,  tFromF,  's');
     setValue(tFromFmsEl, tFromFms,'ms');
     if (Number.isFinite(tFromFmsQuarter)){
-      tFromFmsQEl.innerHTML = nf.format(tFromFmsQuarter) + '<span class="u"> ms (¼T)</span>';
+      tFromFmsQEl.innerHTML = nf.format(tFromFmsQuarter) + '<span class="unit"> ms (¼T)</span>';
     } else {
-      tFromFmsQEl.innerHTML = '—<span class="u"> ms (¼T)</span>';
+      tFromFmsQEl.innerHTML = '—<span class="unit"> ms (¼T)</span>';
     }
   }
   ['input','change'].forEach(ev=>{
