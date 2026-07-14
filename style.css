@@ -132,11 +132,57 @@
     font-size: 22px;
     color:#e5e7eb;
   }
-  .value-inline .u{
-    margin-left: 8px; 
+  .value-inline .unit{
     font-weight: 700;
     font-size: 22px;
     color:#e5e7eb;
   }
 
   .small{ font-size:.9rem; color:#9ca3af; margin-top:4px; }
+
+select{
+  padding:10px 28px 10px 12px;
+  background:#1f2937;
+  color:#e5e7eb;
+  border:0px none;
+  border-radius:10px;
+  outline:none;
+  font-size:15px;
+  font-family:"Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+  cursor:pointer;
+  appearance:none;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  position:relative;
+}
+
+select{
+  background-image:
+    linear-gradient(45deg, transparent 50%, #9ca3af 50%),
+    linear-gradient(135deg, #9ca3af 50%, transparent 50%);
+  background-position:
+    calc(100% - 16px) calc(50% - 3px),
+    calc(100% - 10px) calc(50% - 3px);
+  background-size:6px 6px, 6px 6px;
+  background-repeat:no-repeat;
+}
+
+select:hover{
+  background-color:#111827;
+}
+
+select:focus{
+  box-shadow:0 0 0 3px rgba(56,189,248,.12);
+}
+
+.fieldline select,
+.input-wrap select{
+  height: 42px;
+}
+
+.fieldline div[style*="flex"],
+.input-wrap div[style*="flex"]{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
