@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Arreglos de full-range</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page">
+    <div class="navbar">
+      <ul style="display: flex; list-style: none;">
+        <li><button class="navbutton" onclick="location.href='index.html'">Conversión unidades acústicas</button></li>
+        <li><button class="navbutton" onclick="location.href='electricity_units.html'">Conversión unidades eléctricas</button></li>
+        <li><button class="navbutton" onclick="location.href='db_units.html'">Cálculos de dB y potencia</button></li>
+        <li><button class="navbutton" onclick="location.href='impedance.html'">Impedancias entre etapas y altavoces</button></li>
+        <li><button class="navbutton" onclick="location.href='subwoofers.html'">Arreglos de subgraves</button></li>
+        <li><button class="navbutton selected" onclick="location.href='full_range.html'">Arreglos de full-range</button></li>
+        <li><button class="navbutton" onclick="location.href='xover.html'">Compatibilidad de filtros X-Over</button></li>
+      </ul>
+    </div>
+    <h1>Arreglos de full-range</h1>
+    <p style="color: yellow;">añadir recomendaciones frontfills </p>
+    <form class="card" onsubmit="return false;">
+      <div class="row">
+        <div>
+          <div class="calc-title">Calculo para evitar que el público central de la primera fila se encuentre sin cobertura de MAIN L&R</div>
+          <p class="small">Según su cobertura, siempre existe una separación máxima de L&R, y una distancia mínima con la primera fila. <br>A veces puede ser necesario usar frontfill para compensar.</p>
+          <div class="fieldline">
+            <div class="unit-left">Cobertura horizontal cajas (º):</div>
+            <input id="main_coverage" type="number" step="0.1" />
+          </div>
+          <div class="fieldline">
+            <div class="unit-left">Medida conocida (m):</div>
+            <select id="calc_mode">
+                <option value="known_mains_separation">Separación entre L y R</option>
+                <option value="known_distance_1st_row">Distancia a la primera fila</option>
+            </select>
+            <input id="known_measure" type="number" step="0.1" />
+          </div>
+        </div>
+        <div class="outbox">
+          <div class="value-inline" id="volt_out">—<span class="u"></span></div>
+        </div>
+      </div>
+    </form>
+    
+    
+  </div>
+<script>
+const coverageInput = document.getElementById('main_coverage');
+const valueInput = document.getElementById('known_measure');
+const modeSelect = document.getElementById('calc_mode');
+const outputDiv = document.getElementById('volt_out');
+
+function calculate() {
+  const coverage = parseFloat(coverageInput.value);
+  const value = parseFloat(valueInput.value);
+  const mode = modeSelect.value;
+
+  if (isNaN(coverage) || isNaN(value) || coverage <= 0 || coverage >= 180 || value <= 0) {
+    outputDiv.innerHTML = '—<span class="u"></span>';
+    return;
+  }
+
+  const alphaRad = (coverage / 2) * (Math.PI / 180);
+  let result = 0;
+  let text = '';
+
+  if (mode === 'known_mains_separation') {
+    result = (value / 2) / Math.tan(alphaRad);
+    text = `<span class="unit">La distancia mínima entre L&R y la primera fila (sin frontfill) debería ser de ${result.toFixed(2)} m.</span>`;
+  } else if (mode === 'known_distance_1st_row') {
+    result = 2 * value * Math.tan(alphaRad);
+    text = `<span class="unit">La separación máxima de L y R (sin frontfill) puede ser de ${result.toFixed(2)}m.</span>`;
+  }
+
+  outputDiv.innerHTML = text;
+}
+
+coverageInput.addEventListener('input', calculate);
+valueInput.addEventListener('input', calculate);
+modeSelect.addEventListener('change', calculate);
+</script>
+</body>
+</html>
