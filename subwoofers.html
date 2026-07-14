@@ -13,15 +13,16 @@
       <ul style="display: flex; list-style: none;">
         <li><button class="navbutton" onclick="location.href='index.html'">Conversión unidades acústicas</button></li>
         <li><button class="navbutton" onclick="location.href='electricity_units.html'">Conversión unidades eléctricas</button></li>
-        <li><button class="navbutton" onclick="location.href='db_units.html'">Calculos de dB</button></li>
-        <li><button class="navbutton" onclick="location.href='impedance.html'">Compatibilidad entre etapas y altavoces</button></li>
+        <li><button class="navbutton" onclick="location.href='db_units.html'">Cálculos de dB y potencia</button></li>
+        <li><button class="navbutton" onclick="location.href='impedance.html'">Impedancias entre etapas y altavoces</button></li>
         <li><button class="navbutton selected" onclick="location.href='subwoofers.html'">Arreglos de subgraves</button></li>
+        <li><button class="navbutton" onclick="location.href='full_range.html'">Arreglos de full-range</button></li>
         <li><button class="navbutton" onclick="location.href='xover.html'">Compatibilidad de filtros X-Over</button></li>
       </ul>
     </div>
 
     <h1>Arreglos de subgraves</h1>
-    <p>en calculos de arreglos (sub): calculo arreglo en linea, calculo arco, claculo gradiente y end fired</p>
+    <p style="color: yellow;">Añadir "arreglo virtual", y calculadora final</p>
 
     <form class="card" onsubmit="return false;">
       <div class="row">
@@ -33,10 +34,10 @@
               <input id="temp" type="number" step="0.1" value="15" />
             </div>
           </div>
-          <div class="small">Este calculo afecta a las demás calculadoras.</div>
+          <div class="small"><b><u>Este calculo afecta a las demás calculadoras.</u></b></div>
         </div>
         <div class="outbox" aria-live="polite">
-          <div class="value-inline" id="cVal">343,4<span class="u">m/s</span></div>
+          <div class="value-inline" id="cVal">343,4<span class="unit">m/s</span></div>
         </div>
       </div>
     </form>
@@ -46,20 +47,42 @@
         <div>
           <div class="calc-title">Evitar "comb-filter"</div>
           <div class="fieldline">
-            <div class="unit-left">Frq de corte del filtro low-pass (Hz)</div>
+            <div class="unit-left">Frq de corte del filtro low-pass en el sistema (Hz)</div>
             <div class="input-wrap">
               <input id="cfFreq" type="number" step="0.1" />
             </div>
           </div>
-          <div class="small">Esta es la distancia maxima que puedes separar los subs para evitar comb-filter.</div>
+          <div class="small">Esta es la distancia maxima que puedes separar los subs para evitar comb-filter entre ellos.</div>
         </div>
         <div class="outbox" aria-live="polite">
-          <div class="value-inline" id="cfMaxDist">-<span class="u">m</span></div>
+          <div class="value-inline" id="cfMaxDist">-<span class="unit">m</span></div>
         </div>
       </div>
     </form>
 
-
+    <form class="card" onsubmit="return false;">
+      <div class="row">
+        <div>
+          <div class="calc-title">Encontrar frecuencia de trabajo ideal de los subgraves</div>
+          <p class="small">Introduce el rango de trabajo de los subgraves</p>
+          <div class="fieldline">
+            <div class="unit-left">Frq inferior (e.j 30 Hz)</div>
+            <div class="input-wrap">
+              <input id="lowestWorkFRQ" type="number" step="0.1" />
+            </div>
+            <div class="unit-left">Frq superior (e.j 100 Hz)</div>
+            <div class="input-wrap">
+              <input id="highestWorkFRQ" type="number" step="0.1" />
+            </div>
+          </div>
+        </div>
+        <div class="outbox" aria-live="polite">
+          <div class="value-inline" id="idealWorkFRQ">-<span class="unit">Hz</span></div>
+        </div>
+      </div>
+    </form>
+    <br>
+    <h3 style="text-align: center;">Arreglo en línea:</h3>
     <form class="card" onsubmit="return false;">
       <div class="row">
         <div>
@@ -70,81 +93,83 @@
             <div class="unit-left">Nº de subs disponibles</div>
             <div class="input-wrap"><input id="NroSubs" type="number" step="0.1" /></div>
           </div>
-          <div class="small">Usa este arreglo para obtener una cobertura horizontal de 76º a la Frq deseada. Recuerda, a más frequencia, cobertura más estrecha, y a menos frequencia, cobertura más ancha.</div>
+          <div class="small">Usa este arreglo para obtener una cobertura horizontal de 76º en la Frq deseada. <br>Recuerda, <b>↑ frequencia = cobertura más estrecha. ↓ frequencia = cobertura más ancha</b>.</div>
         </div>
         <div class="outbox" aria-live="polite">
-            <div class="value-inline" id="TotArregLinea">-<span class="u">m totales arreglo</span></div>
-            <div class="value-inline" id="SeparacionArregLinea">-<span class="u">m entre subs</span></div>
-            <div class="value-inline" id="ColapsoLateralLinea">-<span class="u">Hz colapso lateral</span></div>
+            <div class="value-inline" id="TotArregLinea">-<span class="unit">m totales arreglo</span></div>
+            <div class="value-inline" id="SeparacionArregLinea">-<span class="unit">m entre subs</span></div>
+            <div class="value-inline" id="ColapsoLateralLinea">-<span class="unit">Hz colapso lateral</span></div>
         </div>
       </div>
     </form>
-
+    <br>
+    <h3 style="text-align: center;">Arreglos cardioides:</h3>
     <form class="card" onsubmit="return false;">
       <div class="row">
         <div>
           <div class="calc-title">Calculo arreglo Gradiente</div>
           <div class="fieldline">
             <div class="unit-left">Frq de trabajo (Hz)</div>
-            <div class="input-wrap"><input id="" type="number" step="0.1" /></div>
+            <div class="input-wrap"><input id="gradFreq" type="number" step="0.1" /></div>
           </div>
-          <div class="small">Usa gradiente para priorizar a los músicos (en el escenario se cancela sub totalmente, al público "lanzamos" solo la Frq elegida)</div>
+          
+          <div class="small">Usa arreglo gradiente para priorizar a los músicos (en el escenario se cancela sub totalmente).</div>
         </div>
         <div class="outbox" aria-live="polite">
-            <div class="value-inline" id="">-<span class="u">separación subs (m)</span></div>
-            <div class="value-inline" id="">-<span class="u">ms delay sub trasero (con inversión Ø)</span></div>
+            <div class="value-inline" id="gradDist">-<span class="unit">m separación subs</span></div>
+            <div class="value-inline" id="gradDelay">-<span class="unit">ms delay sub trasero (con inversión Ø)</span></div>
         </div>
       </div>
     </form>
 
-        <form class="card" onsubmit="return false;">
+    <form class="card" onsubmit="return false;">
       <div class="row">
         <div>
-          <div class="calc-title">Calculo arreglo Gradiente Stack Invertido</div>
+          <div class="calc-title">Calculo arreglo Gradiente (Stack Invertido)</div>
           <div class="fieldline">
-            <div class="unit-left">Tamaño de la caja acústica (m)</div>
-            <div class="input-wrap"><input id="" type="number" step="0.1" /></div>
+            <div class="unit-left">Tamaño de la caja acústica (cm)</div>
+            <div class="input-wrap"><input id="gradStackSize" type="number" step="0.1" /></div>
           </div>
           <div class="small"></div>
         </div>
         <div class="outbox" aria-live="polite">
-            <div class="value-inline" id="">-<span class="u">Hz Frq de trabajo</span></div>
-            <div class="value-inline" id="">-<span class="u">ms delay sub trasero (sin inversión Ø)</span></div>
+            <div class="value-inline" id="gradStackFreq">-<span class="unit">Hz Frq de trabajo</span></div>
+            <div class="value-inline" id="gradStackDelay">-<span class="unit">ms delay sub trasero (con inversión Ø)</span></div>
         </div>
       </div>
     </form>
+    <br>
 
-    
     <form class="card" onsubmit="return false;">
       <div class="row">
         <div>
           <div class="calc-title">Calculo arreglo End-Fired</div>
           <div class="fieldline">
             <div class="unit-left">Frq de trabajo (Hz)</div>
-            <div class="input-wrap"><input id="" type="number" step="0.1" /></div>
+            <div class="input-wrap"><input id="efFreq" type="number" step="0.1" /></div>
           </div>
-          <div class="small">Usa end-fired para priorizar al público (en el escenario no se cancela sub totalmente, al público "lanzamos" todas las Frq de sub)</div>
+          <div class="small">Usa arreglo end-fired para priorizar al público (en el escenario no se cancela sub totalmente).</div>
         </div>
         <div class="outbox" aria-live="polite">
-            <div class="value-inline" id="">-<span class="u">separación subs (m)</span></div>
-            <div class="value-inline" id="">-<span class="u">ms delay sub trasero (sin inversión Ø)</span></div>
+            <div class="value-inline" id="efDist">-<span class="unit">m separación subs</span></div>
+            <div class="value-inline" id="efDelay">-<span class="unit">ms delay sub delantero (sin inversión Ø)</span></div>
         </div>
       </div>
     </form>
 
-            <form class="card" onsubmit="return false;">
+    <form class="card" onsubmit="return false;">
       <div class="row">
         <div>
-          <div class="calc-title">Calculo arreglo End-Fired Stack Invertido</div>
+          <div class="calc-title">Calculo arreglo End-Fired (Stack Invertido)</div>
           <div class="fieldline">
-            <div class="unit-left">Tamaño de la caja acústica (m)</div>
-            <div class="input-wrap"><input id="" type="number" step="0.1" /></div>
+            <div class="unit-left">Tamaño de la caja acústica (cm)</div>
+            <div class="input-wrap"><input id="efStackSize" type="number" step="0.1" /></div>
           </div>
           <div class="small"></div>
         </div>
         <div class="outbox" aria-live="polite">
-            <div class="value-inline" id="">-<span class="u">Hz Frq de trabajo</span></div>
-            <div class="value-inline" id="">-<span class="u">ms delay sub trasero (sin inversión Ø)</span></div>
+            <div class="value-inline" id="efStackFreq">-<span class="unit">Hz Frq de trabajo</span></div>
+            <div class="value-inline" id="efStackDelay">-<span class="unit">ms delay sub delantero (sin inversión Ø)</span></div>
         </div>
       </div>
     </form>
@@ -157,40 +182,47 @@
 <script>
   const nf = new Intl.NumberFormat('es-ES', { maximumFractionDigits: 6 });
   const $  = (s) => document.querySelector(s);
-
-  // Inputs velocidad de propagacion
   const tempInput = $('#temp');
   const cValEl    = $('#cVal');
-
-  // Inputs Comb Filter
   const cutFreqInput = document.getElementById('cfFreq');
   const cfMaxDistEl  = document.getElementById('cfMaxDist');
-
-  // Inputs Arreglo en linea
-  const Frq76Input       = document.getElementById('Frq76');
-  const NroSubsInput     = document.getElementById('NroSubs');
+  const lowestWorkFRQInput  = document.getElementById('lowestWorkFRQ');
+  const highestWorkFRQInput = document.getElementById('highestWorkFRQ');
+  const idealWorkFRQEl      = document.getElementById('idealWorkFRQ');
+  const Frq76Input            = document.getElementById('Frq76');
+  const NroSubsInput          = document.getElementById('NroSubs');
   const TotArregLineaEl       = document.getElementById('TotArregLinea');
   const SeparacionArregLineaEl = document.getElementById('SeparacionArregLinea');
   const ColapsoLateralLineaEl = document.getElementById('ColapsoLateralLinea');
+  const gradFreqInput = document.getElementById('gradFreq');
+  const gradDistEl    = document.getElementById('gradDist');
+  const gradDelayEl   = document.getElementById('gradDelay');
+  const gradStackSizeInput = document.getElementById('gradStackSize');
+  const gradStackFreqEl    = document.getElementById('gradStackFreq');
+  const gradStackDelayEl   = document.getElementById('gradStackDelay');
+  const efFreqInput = document.getElementById('efFreq');
+  const efDistEl    = document.getElementById('efDist');
+  const efDelayEl   = document.getElementById('efDelay');
+  const efStackSizeInput = document.getElementById('efStackSize');
+  const efStackFreqEl    = document.getElementById('efStackFreq');
+  const efStackDelayEl   = document.getElementById('efStackDelay');
 
-  // Función genérica para actualizar resultados
   function setValue(el, val, unit){
     if (Number.isFinite(val)){
-      el.innerHTML = nf.format(val) + '<span class="u"> ' + unit + '</span>';
+      el.innerHTML = nf.format(val) + '<span class="unit"> ' + unit + '</span>';
     } else {
-      el.innerHTML = '—<span class="u"> ' + unit + '</span>';
+      el.innerHTML = '—<span class="unit"> ' + unit + '</span>';
     }
   }
 
   function setValueCF(el, val, unit){
     if (Number.isFinite(val)){
-      el.innerHTML = nf.format(val) + '<span class="u"> ' + unit + '</span>';
+      el.innerHTML = nf.format(val) + '<span class="unit"> ' + unit + '</span>';
     } else {
-      el.innerHTML = '—<span class="u"> ' + unit + '</span>';
+      el.innerHTML = '—<span class="unit"> ' + unit + '</span>';
     }
   }
 
-  // Velocidad de propagación según temperatura
   function calcC(){
     const T = parseFloat(tempInput.value);
     if (isFinite(T)){
@@ -203,7 +235,6 @@
     }
   }
 
-  // Comb Filter
   function recomputeCF(){
     const c = calcC();
     const fCut = parseFloat(cutFreqInput.value);
@@ -211,7 +242,13 @@
     setValueCF(cfMaxDistEl, maxDist, 'metros');
   }
 
-  // Arreglo en línea
+  function recomputeIdealFreq() {
+    const low = parseFloat(lowestWorkFRQInput.value);
+    const high = parseFloat(highestWorkFRQInput.value);
+    const idealFreq = (isFinite(low) && isFinite(high)) ? (low + high) / 2 : NaN;
+    setValue(idealWorkFRQEl, idealFreq, 'Hz');
+  }
+
   function recomputeArregloLinea() {
     const c = calcC();
     const f = parseFloat(Frq76Input.value);
@@ -226,25 +263,76 @@
     setValue(ColapsoLateralLineaEl, colapsLat, 'Hz colapso lateral');
   }
 
-  // Función principal que se ejecuta al cambiar temperatura
-  function recompute(){
-    calcC();               // Actualiza velocidad
-    recomputeCF();          // Actualiza Comb Filter
-    recomputeArregloLinea(); // Actualiza Arreglo en línea
+  function recomputeGradiente() {
+    const c = calcC();
+    const f = parseFloat(gradFreqInput.value);
+
+    const dist = (isFinite(c) && isFinite(f) && f > 0) ? (c / f) / 4 : NaN;
+    const delay = (isFinite(f) && f > 0) ? (1 / f) / 4 * 1000 : NaN;
+
+    setValue(gradDistEl, dist, 'm separación subs');
+    setValue(gradDelayEl, delay, 'ms delay sub trasero (con inversión Ø)');
   }
 
-  // Eventos
+  function recomputeGradienteStack() {
+    const c = calcC();
+    const sizeCm = parseFloat(gradStackSizeInput.value);
+
+    const freq = (isFinite(c) && isFinite(sizeCm) && sizeCm > 0) ? c / ((sizeCm / 100) * 4) : NaN;
+    const delay = (isFinite(freq)) ? (1 / freq) / 4 * 1000 : NaN;
+
+    setValue(gradStackFreqEl, freq, 'Hz Frq de trabajo');
+    setValue(gradStackDelayEl, delay, 'ms delay sub trasero (con inversión Ø)');
+  }
+
+  function recomputeEndFired() {
+    const c = calcC();
+    const f = parseFloat(efFreqInput.value);
+
+    const dist = (isFinite(c) && isFinite(f) && f > 0) ? (c / f) / 4 : NaN;
+    const delay = (isFinite(f) && f > 0) ? (1 / f) / 4 * 1000 : NaN;
+
+    setValue(efDistEl, dist, 'm separación subs');
+    setValue(efDelayEl, delay, 'ms delay sub delantero (sin inversión Ø)');
+  }
+
+  function recomputeEndFiredStack() {
+    const c = calcC();
+    const sizeCm = parseFloat(efStackSizeInput.value);
+
+    const freq = (isFinite(c) && isFinite(sizeCm) && sizeCm > 0) ? c / ((sizeCm / 100) * 4) : NaN;
+    const delay = (isFinite(freq)) ? (1 / freq) / 4 * 1000 : NaN;
+
+    setValue(efStackFreqEl, freq, 'Hz Frq de trabajo');
+    setValue(efStackDelayEl, delay, 'ms delay sub delantero (sin inversión Ø)');
+  }
+
+  function recompute(){
+    calcC();
+    recomputeCF();
+    recomputeIdealFreq();
+    recomputeArregloLinea();
+    recomputeGradiente();
+    recomputeGradienteStack();
+    recomputeEndFired();
+    recomputeEndFiredStack();
+  }
+
   ['input','change'].forEach(ev=>{
     tempInput.addEventListener(ev, recompute);
     cutFreqInput.addEventListener(ev, recomputeCF);
+    lowestWorkFRQInput.addEventListener(ev, recomputeIdealFreq);
+    highestWorkFRQInput.addEventListener(ev, recomputeIdealFreq);
     Frq76Input.addEventListener(ev, recomputeArregloLinea);
     NroSubsInput.addEventListener(ev, recomputeArregloLinea);
+    gradFreqInput.addEventListener(ev, recomputeGradiente);
+    gradStackSizeInput.addEventListener(ev, recomputeGradienteStack);
+    efFreqInput.addEventListener(ev, recomputeEndFired);
+    efStackSizeInput.addEventListener(ev, recomputeEndFiredStack);
   });
 
-  // Inicial
   recompute();
 </script>
-
 
 </body>
 </html>
