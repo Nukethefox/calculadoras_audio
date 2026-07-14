@@ -3,33 +3,249 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Calculos dB</title>
+<title>Cálculos dB y potencia</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="page">
-
     <div class="navbar">
       <ul style="display: flex; list-style: none;">
         <li><button class="navbutton" onclick="location.href='index.html'">Conversión unidades acústicas</button></li>
         <li><button class="navbutton" onclick="location.href='electricity_units.html'">Conversión unidades eléctricas</button></li>
-        <li><button class="navbutton selected" onclick="location.href='db_units.html'">Calculos de dB</button></li>
-        <li><button class="navbutton" onclick="location.href='impedance.html'">Compatibilidad entre etapas y altavoces</button></li>
+        <li><button class="navbutton selected" onclick="location.href='db_units.html'">Cálculos de dB y potencia</button></li>
+        <li><button class="navbutton" onclick="location.href='impedance.html'">Impedancias entre etapas y altavoces</button></li>
         <li><button class="navbutton" onclick="location.href='subwoofers.html'">Arreglos de subgraves</button></li>
+        <li><button class="navbutton" onclick="location.href='full_range.html'">Arreglos de full-range</button></li>
         <li><button class="navbutton" onclick="location.href='xover.html'">Compatibilidad de filtros X-Over</button></li>
       </ul>
     </div>
-
-    <h1>Calculos de dB</h1>
-    <p>en calculos de dB: dBu i dBV, ganancia y amplificacion, cambio por potencia y cambio por distancia</p>
-
-
-
-   
+    <h1>Cálculos de dB y potencia</h1>
+    <form class="card" onsubmit="return false;">
+      <div class="row">
+        <div>
+          <div class="calc-title">Conversor de unidades de tensión de audio (dBu / dBV / Volts / dBFS)</div>
+          <div class="fieldline">
+            <div class="unit-left">dBu:</div>
+            <input id="db_dbu" type="number" step="0.0001" />
+          </div>
+          <div class="fieldline">
+            <div class="unit-left">dBV:</div>
+            <input id="db_dbv" type="number" step="0.0001" />
+          </div>
+          <div class="fieldline">
+            <div class="unit-left">Voltios (V):</div>
+            <input id="db_volts" type="number" step="0.0001" min="0.00001" />
+          </div>
+          <div class="fieldline">
+            <div class="unit-left">dBFS / VU Digital:</div>
+            <input id="db_dbfs" type="number" step="0.0001" />
+          </div>
+        </div>
+      </div>
+    </form>
+    <br>
+    <form class="card" onsubmit="return false;">
+      <div class="row">
+        <div>
+          <div class="calc-title">Ganancia en dB (tensión)</div>
+          <div class="fieldline">
+            <div class="unit-left">dBu Inicial</div>
+            <div class="input-wrap"><input id="gain_volt_init" type="number" step="0.1"/></div>
+          </div>
+          <div class="fieldline">
+            <div class="unit-left">dB GAIN (±)</div>
+            <div class="input-wrap"><input id="gain_volt_offset" type="number" step="0.1"/></div>
+          </div>
+        </div>
+        <div class="outbox" aria-live="polite">
+            <div class="value-inline" id="gain_volt_out">-<span class="unit"> dBu</span></div>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div>
+          <div class="calc-title">Cambio por Distancia</div>
+          <div class="fieldline">
+            <div class="unit-left">Distancia Inicial (m)</div>
+            <div class="input-wrap"><input id="dist_d1" type="number" step="0.1" min="0.01"/></div>
+          </div>
+          <div class="fieldline">
+            <div class="unit-left">Distancia Final (m)</div>
+            <div class="input-wrap"><input id="dist_d2" type="number" step="0.1" min="0.01"/></div>
+          </div>
+        </div>
+        <div class="outbox" aria-live="polite">
+            <div class="value-inline" id="dist_out">-<span class="unit"> dB</span></div>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div>
+          <div class="calc-title">Cambio por Potencia</div>
+          <div class="fieldline">
+            <div class="unit-left">Potencia Inicial (W)</div>
+            <div class="input-wrap"><input id="pow_w1" type="number" step="0.1" min="0.01"/></div>
+          </div>
+          <div class="fieldline">
+            <div class="unit-left">Potencia Final (W)</div>
+            <div class="input-wrap"><input id="pow_w2" type="number" step="0.1" min="0.01"/></div>
+          </div>
+        </div>
+        <div class="outbox" aria-live="polite">
+            <div class="value-inline" id="pow_out">-<span class="unit"> dB</span></div>
+        </div>
+      </div>
+      <div>
+        <p class="small">
+          <br><b>Ejemplos de uso:</b><br><br>
+          <strong>1. SPL Máximo Real:</strong> Para saber la presión máxima que dará un altavoz, pon en el campo "inicial" la potencia de medición del fabricante (normalmente 1 W), y en "final" la potencia máxima soportada. Luego solo debes sumar los dB resultantes a la sensibilidad original del fabricante.<br>
+          <strong>2. Ajuste de Limitadores:</strong> Para adaptar un altavoz a un amplificador más potente sin dañarlo, pon en "final" la potencia límite segura del altavoz y en "inicial" la potencia máxima de la nueva etapa. El resultado en dB es el valor exacto que debes atenuar en el limitador de la nueva etapa.<br>
+          <strong>3. Relación de Nivel y potencia entre sistemas:</strong> Pon en "inicial" la potencia de tu sistema de referencia y ve jugando con el valor de la potencia "final" hasta que el resultado en dB coincida con la atenuación deseada para tu sistema de refuerzo (por ejemplo, ajusta "final" para saber que potencia debes darle al Frontfill para que te de 10 dB menos que el Main).
+        </p>
+      </div>
+    </form>
   </div>
-
 <script>
+const dbuInput = document.getElementById('db_dbu');
+const dbvInput = document.getElementById('db_dbv');
+const voltsInput = document.getElementById('db_volts');
+const dbfsInput = document.getElementById('db_dbfs');
+const voltInit = document.getElementById('gain_volt_init');
+const voltOffset = document.getElementById('gain_volt_offset');
+const voltOut = document.getElementById('gain_volt_out');
+const distD1 = document.getElementById('dist_d1');
+const distD2 = document.getElementById('dist_d2');
+const distOut = document.getElementById('dist_out');
+const powW1 = document.getElementById('pow_w1');
+const powW2 = document.getElementById('pow_w2');
+const powOut = document.getElementById('pow_out');
 
+function isValidNumber(val) {
+  return val !== '' && val !== '-' && val !== '.' && val !== '-.';
+}
+
+dbuInput.addEventListener('input', () => {
+  if (!isValidNumber(dbuInput.value)) return;
+  const dbu = parseFloat(dbuInput.value);
+  if (isNaN(dbu)) return;
+  
+  const dbv = dbu - 2.2;
+  const volts = Math.pow(10, dbv / 20);
+  const dbfs = dbu - 24;
+  
+  dbvInput.value = dbv.toFixed(4);
+  voltsInput.value = volts.toFixed(4);
+  dbfsInput.value = dbfs.toFixed(4);
+});
+
+dbvInput.addEventListener('input', () => {
+  if (!isValidNumber(dbvInput.value)) return;
+  const dbv = parseFloat(dbvInput.value);
+  if (isNaN(dbv)) return;
+  
+  const dbu = dbv + 2.2;
+  const volts = Math.pow(10, dbv / 20);
+  const dbfs = dbu - 24;
+  
+  dbuInput.value = dbu.toFixed(4);
+  voltsInput.value = volts.toFixed(4);
+  dbfsInput.value = dbfs.toFixed(4);
+});
+
+voltsInput.addEventListener('input', () => {
+  if (!isValidNumber(voltsInput.value)) return;
+  const volts = parseFloat(voltsInput.value);
+  if (isNaN(volts) || volts <= 0) return;
+  
+  const dbv = 20 * Math.log10(volts);
+  const dbu = dbv + 2.2;
+  const dbfs = dbu - 24;
+  
+  dbvInput.value = dbv.toFixed(4);
+  dbuInput.value = dbu.toFixed(4);
+  dbfsInput.value = dbfs.toFixed(4);
+});
+
+dbfsInput.addEventListener('input', () => {
+  if (!isValidNumber(dbfsInput.value)) return;
+  const dbfs = parseFloat(dbfsInput.value);
+  if (isNaN(dbfs)) return;
+  
+  const dbu = dbfs + 24;
+  const dbv = dbu - 2.2;
+  const volts = Math.pow(10, dbv / 20);
+  
+  dbuInput.value = dbu.toFixed(4);
+  dbvInput.value = dbv.toFixed(4);
+  voltsInput.value = volts.toFixed(4);
+});
+
+const inputs = [dbuInput, dbvInput, voltsInput, dbfsInput];
+inputs.forEach(input => {
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Backspace' || e.key === 'Delete') {
+      setTimeout(() => {
+        if (input.value === '') {
+          inputs.forEach(inp => inp.value = '');
+        }
+      }, 0);
+    }
+  });
+});
+
+function isValidGainInput(val) {
+  return val !== '' && val !== '-' && val !== '.' && val !== '-.';
+}
+
+function calcVoltGain() {
+  if (!isValidGainInput(voltInit.value) || !isValidGainInput(voltOffset.value)) {
+    voltOut.innerHTML = '-<span class="unit"> dBu</span>';
+    return;
+  }
+  const init = parseFloat(voltInit.value);
+  const offset = parseFloat(voltOffset.value);
+  if (isNaN(init) || isNaN(offset)) return;
+
+  const result = init + offset;
+  voltOut.innerHTML = `${result.toFixed(1)}<span class="unit"> dBu</span>`;
+}
+
+function calcDistLoss() {
+  if (!isValidGainInput(distD1.value) || !isValidGainInput(distD2.value)) {
+    distOut.innerHTML = '-<span class="unit"> dB</span>';
+    return;
+  }
+  const d1 = parseFloat(distD1.value);
+  const d2 = parseFloat(distD2.value);
+  if (isNaN(d1) || isNaN(d2) || d1 <= 0 || d2 <= 0) return;
+
+  const dbChange = 20 * Math.log10(d1 / d2);
+  const sign = dbChange >= 0 ? '+' : '';
+  distOut.innerHTML = `${sign}${dbChange.toFixed(2)}<span class="unit"> dB</span>`;
+}
+
+function calcPowGain() {
+  if (!isValidGainInput(powW1.value) || !isValidGainInput(powW2.value)) {
+    powOut.innerHTML = '-<span class="unit"> dB</span>';
+    return;
+  }
+  const w1 = parseFloat(powW1.value);
+  const w2 = parseFloat(powW2.value);
+  if (isNaN(w1) || isNaN(w2) || w1 <= 0 || w2 <= 0) return;
+
+  const dbChange = 10 * Math.log10(w2 / w1);
+  const sign = dbChange >= 0 ? '+' : '';
+  powOut.innerHTML = `${sign}${dbChange.toFixed(2)}<span class="unit"> dB</span>`;
+}
+
+voltInit.addEventListener('input', calcVoltGain);
+voltOffset.addEventListener('input', calcVoltGain);
+
+distD1.addEventListener('input', calcDistLoss);
+distD2.addEventListener('input', calcDistLoss);
+
+powW1.addEventListener('input', calcPowGain);
+powW2.addEventListener('input', calcPowGain);
 </script>
 </body>
 </html>
